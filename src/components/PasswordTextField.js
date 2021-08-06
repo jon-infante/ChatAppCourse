@@ -3,42 +3,41 @@ import {TextInput, Text, StyleSheet, View} from 'react-native'
 import Color from '../utils/Colors'
 import Constants from '../const/Constants'
 
-const EmailTextField = ({term, placeHolder, onTermChange, onValidateEmailAddress, error}) => {
+const PasswordtextField = ({term, placeHolder, onTermChange, onValidatePasswordField, error}) => {
     return (
         <View>
-            <Text style = {styles.ErrorText}>{error}</Text>
+            <Text style= {styles.ErrorText}>{error}</Text>
             <View style = {styles.TextFieldView}>
                 <TextInput
-                    autoCorrect= {false}
-                    style =  {styles.TextField}
+                    autoCorrect = {false}
+                    secureTextEntry
+                    style = {styles.TextField}
                     placeholder = {placeHolder}
-                    value = {term}
-                    onChangeText={onTermChange}
-                    onEndEditing = {onValidateEmailAddress}
+                    onChangeText = {onTermChange}
+                    onEndEditing = {onValidatePasswordField}       
                 />
             </View>
         </View>
     )
 }
 
-
 const styles = StyleSheet.create({
-    TextField: {
+    TextField:{
         fontSize: 14,
         flex: 1,
         marginHorizontal: 20
     },
     TextFieldView: {
         height: Constants.screenHeight * 0.06,
-        width: Constants.screenWidth * 0.89,
+        width: Constants.screenWidth * 0.8,
         borderRadius: 10,
         marginTop: 5,
-        marginLeft: 10,
+        marginLeft: Constants.screenWidth * 0.08,
         marginBottom: 10,
         borderColor: Color.black,
         borderWidth: 1,
         justifyContent: 'center',
-        backgroundColor: Color.white,
+        backgroundColor: Color.smoke
     },
     ErrorText: {
         fontSize: 12,
@@ -48,4 +47,4 @@ const styles = StyleSheet.create({
     }
 })
 
-export default EmailTextField
+export default PasswordtextField
