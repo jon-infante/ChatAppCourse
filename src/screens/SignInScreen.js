@@ -9,8 +9,7 @@ import PasswordtextField from '../components/PasswordTextField'
 import Strings from '../const/String'
 import Images from '../const/Images'
 import Constants from '../const/Constants'
-
-
+import firebase from '../firebase/Firebase'
 
 function SignInScreen(){
 
@@ -30,6 +29,45 @@ function SignInScreen(){
         const isValidField = Utility.isValidField(password)
         isValidField ? setPasswordError(''): setPasswordError(Strings.PasswordFieldEmpty)
         return isValidField
+    }
+
+    performAuth = () => {
+        const isValidEmail = validateEmailAddress()
+        const isValidPassword = validatePasswordField()
+
+        if(isValidEmail && isValidPassword){
+            setEmailError('')
+            setPasswordError('')
+            registration(email, password)
+        }
+    }
+
+    registration = (email, password) => {
+        try{
+            setIsLoading(true)
+            
+            firebase.auth().signInWithEmailAndPassword(email, password)
+            .then(user => {
+                setIsLoading(false)
+                Alert.alert('Logged In')
+            }).catch((error) => {
+
+                firebase.auth().createUserWithEmailAndPassword(email, password)
+                .then(user => {
+                    setIsLoading(false)
+                    Alert.alert('Create a New User')
+                }).catch((error) => {
+                    setIsLoading(false)
+                    console.log('error')
+                    Alert.alert(error)
+                })
+            })
+        }
+        catch(error){ // except
+            setIsLoading(false)
+            Alert.alert(error)
+
+        }
     }
 
 
