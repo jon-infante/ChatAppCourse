@@ -59,13 +59,13 @@ function SignInScreen(){
                 }).catch((error) => {
                     setIsLoading(false)
                     console.log('error')
-                    Alert.alert(error)
+                    Alert.alert(error.message)
                 })
             })
         }
         catch(error){ // except
             setIsLoading(false)
-            Alert.alert(error)
+            Alert.alert(error.message)
 
         }
     }
@@ -92,7 +92,7 @@ function SignInScreen(){
                     onTermChange = {newPassword => setPassword(newPassword)}
                     onValidatePasswordField = {validatePasswordField}
                 />
-                <Button title = {Strings.Join}/>
+                <Button title = {Strings.Join} onPress = {performAuth} isLoading = {isLoading}/>
             </SafeAreaView>
             </View>
 
