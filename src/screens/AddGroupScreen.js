@@ -61,6 +61,15 @@ function AddGroupScreen(){
         }
     }
 
+    function createStore() {
+        firestore.collection('dogs').doc().set({
+            name: 'Bayone',
+            age: 24
+        }).then(() => {
+            Alert.alert('Firestore updated!')
+        })
+     }
+
     return (
         <View style={styles.container}>
             <CustomTextField
@@ -71,7 +80,7 @@ function AddGroupScreen(){
                 onValidateTextField = {validateField}
                 />
 
-                <Button title = {Strings.CreateGroup} onPress= {performCreateGroup} isLoading = {isLoading}/>
+                <Button title = {Strings.CreateGroup} onPress= {createStore} isLoading = {isLoading}/>
         </View>
 )};
 
