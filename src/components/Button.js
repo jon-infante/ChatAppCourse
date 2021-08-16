@@ -7,7 +7,7 @@ const Button = (props) => {
 
     const loader = () => {
         return (
-            <ActivityIndicator animating = {isLoading}/>
+            <ActivityIndicator color = "0000ff" animating = {isLoading}/>
         )
     }
     

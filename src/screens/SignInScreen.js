@@ -10,8 +10,10 @@ import Strings from '../const/String'
 import Images from '../const/Images'
 import Constants from '../const/Constants'
 import firebase from '../firebase/Firebase'
+import { CommonActions } from '@react-navigation/native'
 
-function SignInScreen(){
+
+function SignInScreen({navigation}){
 
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
@@ -49,23 +51,32 @@ function SignInScreen(){
             firebase.auth().signInWithEmailAndPassword(email, password)
             .then(user => {
                 setIsLoading(false)
-                Alert.alert('Logged In')
+                    // Alert.alert('Logged In')
+                    navigation.dispatch(
+                        CommonActions.reset({
+                        index: 0,
+                        routes: [{name: 'Group Screen'}]
+                    }))
             }).catch((error) => {
-
                 firebase.auth().createUserWithEmailAndPassword(email, password)
-                .then(user => {
-                    setIsLoading(false)
-                    Alert.alert('Create a New User')
+                    .then(user => {
+                        setIsLoading(false)
+                        // Alert.alert('Created a New User')
+                        navigation.dispatch(
+                            CommonActions.reset({
+                            index: 0,
+                            routes: [{name: 'Group Screen'}]
+                        }))
                 }).catch((error) => {
                     setIsLoading(false)
-                    console.log('error')
+                    console.log(error.message)
                     Alert.alert(error.message)
                 })
             })
         }
         catch(error){ // except
             setIsLoading(false)
-            Alert.alert(error.message)
+            // Alert.alert(error.message)
 
         }
     }
