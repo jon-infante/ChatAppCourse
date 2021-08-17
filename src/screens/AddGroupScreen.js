@@ -5,7 +5,7 @@ import Button from '../components/Button'
 import Color from '../utils/Colors'
 import Strings from '../const/String'
 import Utility from '../utils/Utility'
-import firebase, {firestore} from '../firebase/Firebase'
+import firebase, { firestore } from '../firebase/Firebase'
 import useColorScheme from 'react-native/Libraries/Utilities/useColorScheme'
 
 
@@ -61,14 +61,14 @@ function AddGroupScreen(){
         }
     }
 
-    function createStore() {
-        firestore.collection('dogs').doc().set({
-            name: 'Bayone',
-            age: 24
-        }).then(() => {
-            Alert.alert('Firestore updated!')
-        })
-     }
+    // function createStore() {
+    //     firestore.collection('dogs').doc().set({
+    //         name: 'Bayone',
+    //         age: 24
+    //     }).then(() => {
+    //         Alert.alert('Firestore updated!')
+    //     })
+    //  }
 
     return (
         <View style={styles.container}>
@@ -80,7 +80,7 @@ function AddGroupScreen(){
                 onValidateTextField = {validateField}
                 />
 
-                <Button title = {Strings.CreateGroup} onPress= {createStore} isLoading = {isLoading}/>
+                <Button title = {Strings.CreateGroup} onPress= {performCreateGroup} isLoading = {isLoading}/>
         </View>
 )};
 
