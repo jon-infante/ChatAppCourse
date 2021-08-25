@@ -5,7 +5,7 @@ import Constants from '../const/Constants'
 import Button from './Button'
 import Strings from '../const/String'
 
-const MessageFieldView = ({item, placeHolder, onTermChange, onValidateTextField, error, onSubmit, isJoined}) => {
+const MessageFieldView = ({item, placeHolder, onTermChange, onValidateTextField, error, onSubmit, isJoined, term}) => {
     return (
         <View style = {styles.containterView}>
             <View style={styles.fieldView}>
