@@ -15,7 +15,6 @@ function MessageItem({item}) {
                 <View style = {styles.othersMessageContainersView}>
                     <Text style = {[styles.senderName, {textAlign: 'right'}]}>{item.senderEmail}</Text>
                     <Text style = {[styles.message, {textAlign: 'right'}]}>{item.message}</Text>
-
                 </View>
             )
         }
@@ -29,6 +28,9 @@ function MessageItem({item}) {
             )
         }
     }
+    return(
+        messageView()
+    )
 
 }
 

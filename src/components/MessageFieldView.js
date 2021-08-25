@@ -1,8 +1,7 @@
 import React from 'react'
-import {TextInput, Text, StyleSheet, View} from 'react-native'
+import {TextInput, Text, StyleSheet, View, Button} from 'react-native'
 import Color from '../utils/Colors'
 import Constants from '../const/Constants'
-import Button from './Button'
 import Strings from '../const/String'
 
 const MessageFieldView = ({item, placeHolder, onTermChange, onValidateTextField, error, onSubmit, isJoined, term}) => {
@@ -17,7 +16,7 @@ const MessageFieldView = ({item, placeHolder, onTermChange, onValidateTextField,
                     onChangeText = {onTermChange}
                     onEndEditing = {onValidateTextField}
                 />
-                <Button title = {Strings.Send} color = {Color.white} onPress = {onSubmit}
+                <Button title = {Strings.Send} color = {Color.uaStudiosGreen} onPress = {onSubmit}
 
                 />
 

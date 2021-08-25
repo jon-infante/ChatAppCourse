@@ -3,7 +3,6 @@ import {StyleSheet, View, TouchableOpacity, Text, FlatList, KeyboardAvoidingView
 import firebase, {firestore} from '../firebase/Firebase'
 import MessageFieldView from '../components/MessageFieldView'
 import Color from '../utils/Colors'
-import Constants from '../const/Constants'
 import Strings from '../const/String'
 import DismissKeyboard from '../components/DismissKeyboard'
 import MessageItem from '../components/MessageItem'
@@ -45,10 +44,28 @@ function ChatScreen({route, navigation}){
         })
     }
 
+    function sendMessagesToChat(){
+        const messageRef = firestore.collection("message").doc(item.groupID).collection("message").doc()
+        const userEmail = firebase.auth().currentUser.email
+
+        messageRef.set({
+            messageID: messageRef.id,
+            message: message,
+            senderId: userId,
+            senderEmail: userEmail
+        }).then(function(docRef){
+            console.log("Document written with ID: ", messageRef.id)
+            setMessage('')
+        }).catch(function(error){
+            Alert.alert(error.message)
+            console.log("Error: ", error)
+        })
+    }
+
     return (
         <DismissKeyboard>
             <KeyboardAvoidingView style = {{flex: 1, flexDirection: 'column', justifyContent: 'center'}}
-            behavior = 'padding' enabled keyboardVerticalOffset={100}>
+            enabled keyboardVerticalOffset={100}>
                 <View style= {styles.container}>
                     <FlatList 
                     style = {styles.flatList}
@@ -70,6 +87,7 @@ function ChatScreen({route, navigation}){
                         term = {message}
                         placeHolder = {String.typeYourMessage}
                         onTermChange = {message => setMessage(message)}
+                        onSubmit = {sendMessagesToChat}
                         >
                         </MessageFieldView>
                     </View>
