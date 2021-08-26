@@ -10,22 +10,79 @@ import MessageItem from '../components/MessageItem'
 function ChatScreen({route, navigation}){
     const [messageList, setMessageList] = useState([])
     const [message, setMessage] = useState('')
-    const [isJoineed, setIsJoined] = useState(false)
+    const [isJoined, setIsJoined] = useState(false)
 
     const {item} = route.params
-    const userId = firebase.auth().currentUser.uid
+    const userID = firebase.auth().currentUser.uid
 
     useEffect(() => {
         console.log(item)
+        getUserJoinedAlreadyOrNot()
         getMessages()
     }, [])
 
+
+    function getUserJoinedAlreadyOrNot(){
+        firestore.collection('members').doc(item.groupID).collection('member').where('userID', '==', userID)
+        .get().then(function(querySnapshot){
+            if (querySnapshot.size > 0){
+                querySnapshot.forEach(function (doc){
+                    if(doc.data() != null){
+                        setIsJoined(true)
+                    }
+                    else{
+                        setIsJoined(false)
+                        showAlertToJoinGroup()
+                    }
+                })
+            }
+            else{
+                showAlertToJoinGroup()
+            }
+        }).catch(function(error){
+            console.log('Error getting documents: ', error)
+        })
+    }
+
+    function showAlertToJoinGroup(){
+        Alert.alert(
+            Strings.JoinChat,
+            Strings.JoinChatConfirmMessage,
+            [{
+                text: 'Yes',
+                onPress: () => {
+                    joinGroup()
+                }
+            }, {
+                text: 'No',
+                onPress: () => {
+
+                }
+            }
+        ],
+         {cancelable: false}
+        )
+    }
+
+    function joinGroup(){
+        const groupMemberRef = firestore.collection('members').doc(item.groupID).collection('member').doc()
+        groupMemberRef.set({
+            userID: userID,
+        }).then(function(docRef){
+            setIsJoined(true)
+            Alert.alert(Strings.joinMessage)
+            setMessage('')
+        }).catch(function(error){
+            setIsJoined(false)
+            Alert.alert(Strings.JoinGroupError)
+        })
+    }
 
     function getMessages() {
         const db = firestore
         var messages = []
 
-        db.collection('message').doc(item.groupID).collection('message')
+        db.collection('message').doc(item.groupID).collection('messages')
         .onSnapshot(function(snapshot){
             snapshot.docChanges().forEach(function(change){
                 if (change.type === 'added'){
@@ -45,13 +102,13 @@ function ChatScreen({route, navigation}){
     }
 
     function sendMessagesToChat(){
-        const messageRef = firestore.collection("message").doc(item.groupID).collection("message").doc()
+        const messageRef = firestore.collection("message").doc(item.groupID).collection("messages").doc()
         const userEmail = firebase.auth().currentUser.email
 
         messageRef.set({
             messageID: messageRef.id,
             message: message,
-            senderId: userId,
+            senderId: userID,
             senderEmail: userEmail
         }).then(function(docRef){
             console.log("Document written with ID: ", messageRef.id)
@@ -85,7 +142,7 @@ function ChatScreen({route, navigation}){
                     <View style = {styles.MessageFieldView}>
                         <MessageFieldView 
                         term = {message}
-                        placeHolder = {String.typeYourMessage}
+                        placeHolder = {Strings.typeYourMessage}
                         onTermChange = {message => setMessage(message)}
                         onSubmit = {sendMessagesToChat}
                         >

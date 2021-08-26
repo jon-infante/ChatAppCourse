@@ -10,7 +10,7 @@ function MessageItem({item}) {
     const userID = firebase.auth().currentUser.uid
 
     function messageView(){
-        if (userID === item.senderID){
+        if (userID === item.senderId){
             return(
                 <View style = {styles.othersMessageContainersView}>
                     <Text style = {[styles.senderName, {textAlign: 'right'}]}>{item.senderEmail}</Text>
