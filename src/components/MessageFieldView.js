@@ -11,7 +11,7 @@ const MessageFieldView = ({item, placeHolder, onTermChange, onValidateTextField,
                 <TextInput
                     autoCorrect = {false}
                     style = {styles.textField}
-                    placeHolder = {placeHolder}
+                    placeholder = {placeHolder}
                     value = {term}
                     onChangeText = {onTermChange}
                     onEndEditing = {onValidateTextField}
