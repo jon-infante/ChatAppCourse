@@ -23,13 +23,13 @@ function SignInScreen({navigation}){
 
     validateEmailAddress = () => {
         const isValidEmail = Utility.isEmailValid(email)
-        isValidEmail ? setEmailError('') : setEmailError(Strings.InvalidEmailAddress)
+        isValidEmail ? setEmailError('') : setEmailError(Strings.InvalidEmailAddress) /*if else*/
         return isValidEmail
     }
 
     validatePasswordField = () => {
         const isValidField = Utility.isValidField(password)
-        isValidField ? setPasswordError(''): setPasswordError(Strings.PasswordFieldEmpty)
+        isValidField ? setPasswordError('') : setPasswordError(Strings.PasswordFieldEmpty)
         return isValidField
     }
 
