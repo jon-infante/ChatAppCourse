@@ -2,10 +2,10 @@ import React, {useState, useEffect} from 'react'
 import {StyleSheet, View, TouchableOpacity, Text, FlatList, KeyboardAvoidingView, Alert, Touchable} from 'react-native'
 import firebase, {firestore} from '../firebase/Firebase'
 import MessageFieldView from '../components/MessageFieldView'
-import Color from '../utils/Colors'
 import Strings from '../const/String'
 import DismissKeyboard from '../components/DismissKeyboard'
 import MessageItem from '../components/MessageItem'
+import LottieView from 'lottie-react-native'
 
 function ChatScreen({route, navigation}){
     const [messageList, setMessageList] = useState([])
@@ -119,7 +119,17 @@ function ChatScreen({route, navigation}){
         })
     }
 
-    return (
+    function showJoinView(){
+        return(
+            <View style = {{flex: 1}}>
+            <LottieView source = {require('../../assets/joinchat.json')} autoPlay loop></LottieView>
+
+            </View>
+        )
+    }
+
+    function showChatView(){
+        return(       
         <DismissKeyboard>
             <KeyboardAvoidingView style = {{flex: 1, flexDirection: 'column', justifyContent: 'center'}}
             enabled keyboardVerticalOffset={100}>
@@ -153,6 +163,15 @@ function ChatScreen({route, navigation}){
             </KeyboardAvoidingView>
 
         </DismissKeyboard>
+    )
+ }
+ 
+ return(
+    <View style = {{flex: 1}}>
+        {
+        isJoined ? showChatView() : showJoinView()
+        }
+    </View>
     )
 }
 

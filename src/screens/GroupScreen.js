@@ -4,9 +4,11 @@ import ButtonWithBackground from '../components/ButtonWithBackground'
 import GroupsItem from '../components/GroupsItems'
 import Images from '../const/Images'
 import firebase, {firestore} from '../firebase/Firebase'
+import LottieView from 'lottie-react-native'
 
 function GroupScreen({navigation}){
     const [groups, setGroups] = useState([])
+    const [isDataLoaded, setIsDataLoaded] = useState(false)
 
     useLayoutEffect(() => {
         navigation.setOptions({
@@ -50,6 +52,7 @@ function getChats(){
     db.collection('groups')
     .onSnapshot(function (snapshot) {
         snapshot.docChanges().forEach(function(change){
+            setIsDataLoaded(true)
             if(change.type == 'added'){
                 console.log('New Group: ', change.doc.data())
                 groupArray.push(change.doc.data())
@@ -65,27 +68,42 @@ function getChats(){
     })
 }
 
-return (
-    <View style={styles.container}>
-        <FlatList 
-            data = {groups}
-            keyExtractor = {(item, index) => 'key' + index}
-            renderItem = {({item}) => {
-                return (
-                    <TouchableOpacity onPress = {() => {
-                        navigation.navigate('Chat Screen', {
-                            item
-                        })
-                    }}>
-                    <GroupsItem item={item}></GroupsItem>
-                    </TouchableOpacity>
-                )
-            }}>
-            
-        </FlatList>
+function showSkeletonView(){
+    return(
+        <View style = {{height:'50%', width:'100%'}}>
+            <LottieView source = {require('../../assets/skeleton-loader.json')} autoPlay loop>
+            </LottieView>
+         </View>
+    )
+}   
 
-    </View>
-)};
+function showGroupsView(){
+
+    return (
+        <View style={styles.container}>
+            <FlatList 
+                data = {groups}
+                keyExtractor = {(item, index) => 'key' + index}
+                renderItem = {({item}) => {
+                    return (
+                        <TouchableOpacity onPress = {() => {
+                            navigation.navigate('Chat Screen', {
+                                item
+                            })
+                        }}>
+                        <GroupsItem item={item}></GroupsItem>
+                        </TouchableOpacity>
+                    )
+                }}>
+                
+            </FlatList>
+
+        </View>
+    )}
+    return  (
+            isDataLoaded ? showGroupsView() : showSkeletonView() 
+    )
+}
 
 const styles = StyleSheet.create({
     container: {
